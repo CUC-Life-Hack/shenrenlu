@@ -1,0 +1,18 @@
+---
+const { frontmatter } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	<title>{frontmatter.title} | 中传神人录</title>
+</head>
+<body>
+	<h1>{frontmatter.title}</h1>
+	<nav><a href="/">← 返回首页</a></nav>
+	<article>
+		<slot />
+	</article>
+</body>
+</html>
