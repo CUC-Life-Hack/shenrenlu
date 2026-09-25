@@ -97,7 +97,36 @@
 		requestAnimationFrame(updateControls);
 	}
 
+	function wrapStandaloneImageGroups() {
+		for (const article of document.querySelectorAll('.page-content article')) {
+			let imageGroup = [];
+
+			const wrapImageGroup = () => {
+				if (imageGroup.length === 0) {
+					return;
+				}
+
+				const paragraph = document.createElement('p');
+				article.insertBefore(paragraph, imageGroup[0]);
+				paragraph.append(...imageGroup);
+				imageGroup = [];
+			};
+
+			for (const child of [...article.children]) {
+				if (child.tagName === 'IMG') {
+					imageGroup.push(child);
+				} else {
+					wrapImageGroup();
+				}
+			}
+
+			wrapImageGroup();
+		}
+	}
+
 	function initializeImageTrays() {
+		wrapStandaloneImageGroups();
+
 		for (const paragraph of document.querySelectorAll(imageParagraphSelector)) {
 			if (isImageParagraph(paragraph)) {
 				createImageTray(paragraph);

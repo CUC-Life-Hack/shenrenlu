@@ -1,0 +1,11 @@
+---
+import StoryDirectory from '../components/StoryDirectory.astro';
+import Layout from '../layouts/index.astro';
+import directory from '../data/story-directory.json';
+---
+
+<Layout frontmatter={{ title: '中传神人录' }}>
+	<h2>目录</h2>
+	<p>年份按事件发生时间计算，不按事件主人公的入学年级计算。</p>
+	<StoryDirectory items={directory.items} />
+</Layout>

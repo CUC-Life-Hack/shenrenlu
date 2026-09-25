@@ -1,0 +1,53 @@
+---
+import { getCollection, render } from 'astro:content';
+import StoryLayout from '../../layouts/story.astro';
+import directory from '../../data/story-directory.json';
+
+interface StoryDirectoryItem {
+	type: 'story';
+	title: string;
+	slug: string;
+}
+
+interface StoryDirectoryGroup {
+	type: 'group';
+	title: string;
+	items: Array<StoryDirectoryItem | StoryDirectoryGroup>;
+}
+
+export async function getStaticPaths() {
+	function getStories(items: Array<StoryDirectoryItem | StoryDirectoryGroup>): StoryDirectoryItem[] {
+		return items.flatMap((item) => item.type === 'story' ? [item] : getStories(item.items));
+	}
+
+	const stories = getStories(directory.items);
+	const slugs = new Set<string>();
+	const entries = await getCollection('stories');
+	const entriesByTitle = new Map(entries.map((entry) => [entry.data.title, entry]));
+
+	return stories.map((story) => {
+		if (slugs.has(story.slug)) {
+			throw new Error(`Duplicate story slug "${story.slug}" in the story directory.`);
+		}
+
+		slugs.add(story.slug);
+		const entry = entriesByTitle.get(story.title);
+
+		if (!entry) {
+			throw new Error(`Story "${story.title}" from the directory has no Markdown content.`);
+		}
+
+		return {
+			params: { slug: story.slug },
+			props: { entry },
+		};
+	});
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<StoryLayout frontmatter={entry.data}>
+	<Content />
+</StoryLayout>

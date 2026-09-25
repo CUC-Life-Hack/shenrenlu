@@ -1,0 +1,39 @@
+---
+interface StoryItem {
+	type: 'story';
+	title: string;
+	slug: string;
+}
+
+interface StoryGroup {
+	type: 'group';
+	title: string;
+	items: DirectoryItem[];
+}
+
+type DirectoryItem = StoryItem | StoryGroup;
+
+interface Props {
+	items: DirectoryItem[];
+}
+
+const { items } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL;
+---
+
+<ul class="story-directory">
+	{
+		items.map((item) =>
+			item.type === 'story' ? (
+				<li>
+					<a href={`${baseUrl}stories/${item.slug}/`}>{item.title}</a>
+				</li>
+			) : (
+				<li>
+					<span>{item.title}</span>
+					<Astro.self items={item.items} />
+				</li>
+			),
+		)
+	}
+</ul>
