@@ -179,6 +179,10 @@ article > p:has(> img:only-child) > img:not([width]):not([height]) {
 	margin: 0 auto;
 }
 
+.page-content img:not([no-view]) {
+	cursor: zoom-in;
+}
+
 @media (max-width: 32rem) {
 	.page-shell {
 		padding-right: 1rem;

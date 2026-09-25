@@ -10,6 +10,9 @@ const themeScriptUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/theme.js`
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width" />
 	<title>{frontmatter.title} | 中传神人录</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.15/dist/fancybox/fancybox.css" />
+	<script is:inline defer src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.15/dist/fancybox/fancybox.umd.js"></script>
+	<script is:inline defer src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/media-viewer.js`}></script>
 	<script is:inline defer src={themeScriptUrl}></script>
 </head>
 <body>
