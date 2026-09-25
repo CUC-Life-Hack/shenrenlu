@@ -1,5 +1,8 @@
 ---
 const { frontmatter } = Astro.props;
+import '../styles/global.styl';
+
+const themeScriptUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/theme.js`;
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -7,8 +10,22 @@ const { frontmatter } = Astro.props;
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width" />
 	<title>首页 | 中传神人录</title>
+	<script is:inline defer src={themeScriptUrl}></script>
 </head>
 <body>
-	<slot />
+	<div class="page-shell">
+		<nav class="site-nav" aria-label="主导航">
+			<div class="site-nav__side"></div>
+			<a class="site-nav__title" href="/shenrenlu/">{frontmatter.title}</a>
+			<div class="site-nav__side site-nav__side--end">
+				<button class="theme-toggle" type="button" aria-label="切换深色模式" title="切换深色模式">
+					<span class="theme-toggle__icon" aria-hidden="true"></span>
+				</button>
+			</div>
+		</nav>
+		<main class="page-content">
+			<slot />
+		</main>
+	</div>
 </body>
 </html>
